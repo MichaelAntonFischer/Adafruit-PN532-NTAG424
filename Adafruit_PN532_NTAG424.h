@@ -176,6 +176,7 @@ public:
 
   void reset(void);
   void wakeup(void);
+  bool turnOffRF(void);
 
   // Generic PN532 functions
   bool SAMConfig(void);

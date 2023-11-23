@@ -198,6 +198,28 @@ void Adafruit_PN532::reset(void) {
 
 /**************************************************************************/
 /*!
+    @brief  Turns off the RF field.
+
+    @returns  true if everything executed properly, false for an error
+*/
+/**************************************************************************/
+bool Adafruit_PN532::turnOffRF(void) {
+  pn532_packetbuffer[0] = PN532_COMMAND_RFCONFIGURATION;
+  pn532_packetbuffer[1] = 0x01; // Configuration Item 1 (CI = 1)
+  pn532_packetbuffer[2] = 0x00; // RF field is turned off (0 = turned off)
+
+  if (!sendCommandCheckAck(pn532_packetbuffer, 3)) {
+    return false; // command failed
+  }
+
+  // Wait for chip to process the command
+  delay(10);
+
+  return true;
+}
+
+/**************************************************************************/
+/*!
     @brief  Wakeup from LowVbat mode into Normal Mode.
 */
 /**************************************************************************/
