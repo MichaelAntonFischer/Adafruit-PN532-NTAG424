@@ -198,7 +198,7 @@ void Adafruit_PN532::reset(void) {
 
 /**************************************************************************/
 /*!
-    @brief  Turns off the RF field.
+    @brief  Turns on/off the RF field.
 
     @returns  true if everything executed properly, false for an error
 */
@@ -207,6 +207,19 @@ bool Adafruit_PN532::turnOffRF(void) {
   uint8_t commandRFoff[3] = {0x32, 0x01, 0x00}; // RFConfiguration command to turn off the RF field
 
   if (!sendCommandCheckAck(commandRFoff, sizeof(commandRFoff))) {
+    return false; // command failed
+  }
+
+  // Wait for chip to process the command
+  delay(10);
+
+  return true;
+}
+
+bool Adafruit_PN532::turnOnRF(void) {
+  uint8_t commandRFon[7] = { 0x02, 0x02, 0x00, 0xD4, 0x02, 0x2A, 0x00 };
+
+  if (!sendCommandCheckAck(commandRFon, sizeof(commandRFon))) {
     return false; // command failed
   }
 
