@@ -218,9 +218,12 @@ bool Adafruit_PN532::turnOffRF(void) {
 
 bool Adafruit_PN532::turnOnRF(void) {
   // Reinitialize the PN532 chip
+  
   if (!begin()) {
     return false; // Initialization failed
   }
+  reset();
+  SAMConfig();
 
   // Wait for chip to process the command
   delay(10);
