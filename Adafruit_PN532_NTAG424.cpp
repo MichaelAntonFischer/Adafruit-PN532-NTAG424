@@ -217,9 +217,12 @@ bool Adafruit_PN532::turnOffRF(void) {
 }
 
 bool Adafruit_PN532::turnOnRF(void) {
-  uint8_t commandRFon[7] = { 0x02, 0x02, 0x00, 0xD4, 0x02, 0x2A, 0x00 };
+  pn532_packetbuffer[0] = PN532_COMMAND_SAMCONFIGURATION;
+  pn532_packetbuffer[1] = 0x01; // Normal mode
+  pn532_packetbuffer[2] = 0x14; // Timeout 50ms * 20 = 1 second
+  pn532_packetbuffer[3] = 0x01; // Use IRQ pin!
 
-  if (!sendCommandCheckAck(commandRFon, sizeof(commandRFon))) {
+  if (!sendCommandCheckAck(pn532_packetbuffer, 4)) {
     return false; // command failed
   }
 
