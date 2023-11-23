@@ -204,12 +204,9 @@ void Adafruit_PN532::reset(void) {
 */
 /**************************************************************************/
 bool Adafruit_PN532::turnOffRF(void) {
-  pn532_packetbuffer[0] = PN532_COMMAND_SAMCONFIGURATION;
-  pn532_packetbuffer[1] = 0x01; // Normal mode
-  pn532_packetbuffer[2] = 0x14; // Timeout 50ms * 20 = 1 second
-  pn532_packetbuffer[3] = 0x00; // Use IRQ pin!
+  uint8_t commandRFoff[3] = {0x32, 0x01, 0x00}; // RFConfiguration command to turn off the RF field
 
-  if (!sendCommandCheckAck(pn532_packetbuffer, 4)) {
+  if (!sendCommandCheckAck(commandRFoff, sizeof(commandRFoff))) {
     return false; // command failed
   }
 
